@@ -1,0 +1,60 @@
+<html>
+<head>
+        <title>Tic Tac Toe</title>
+        <style type="text/css">
+                .game-board {
+                        display: grid; /* use a grid! */
+                        grid-template-columns: repeat(3, 120px);
+                        grid-template-rows: repeat(3, 120px); /* create the 3*3 game board */
+                        justify-content: center;
+                }
+                .square {
+                        border-width: 1.5px;
+                        border-style: solid;
+                        border-color: rgb(118, 118, 118); /* add border */
+                        margin: 5px; /* spacing between cells */
+                        display: flex;
+                        justify-content: center; /* center text horizontally */
+                        align-items: center;     /* center text vertically */
+                        font-size: 30px;
+                        background-color: white;
+                }
+                .square:hover {
+                        background-color: khaki;
+                }
+                .notif {
+                        border: 1px solid rosybrown; 
+                        text-align: center;
+                        font-size: 20px;
+                }
+        </style>
+</head>
+<body>
+        <h1 style="text-align: center;">Beat me in Tic Tac Toe!</h1>
+        <div class="notif" style="margin-bottom: 10px;">
+                It's __'s turn!
+        </div>
+        <div class="game-board">
+                <script>
+                        const NUM_SQUARES = 9;
+                        for (i = 0; i < NUM_SQUARES; i++) {
+                                id = "sq" + 1;
+                                document.write("<div class='square' id='" + id + "'>");
+
+                                /* add content into cell accordingly */
+                                if (i == 2) {
+                                        document.write("X");
+                                } else if (i == 3) {
+                                        document.write("O");
+                                }
+
+                                document.write("</div>");
+                        }
+                        
+                </script>
+        </div>
+        <div class="notif" style="margin-top: 10px;">
+                Win condition displayed here!
+        </div>
+</body>
+</html>

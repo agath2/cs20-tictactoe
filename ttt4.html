@@ -1,0 +1,166 @@
+<html>
+<head>
+        <title>Tic Tac Toe</title>
+        <style type="text/css">
+                .game-board {
+                        display: grid; /* use a grid! */
+                        grid-template-columns: repeat(3, 120px);
+                        grid-template-rows: repeat(3, 120px); /* create the 3*3 game board */
+                        justify-content: center;
+                }
+                .square {
+                        border-width: 1.5px;
+                        border-style: solid;
+                        border-color: rgb(118, 118, 118); /* add border */
+                        margin: 5px; /* spacing between cells */
+                        display: flex;
+                        justify-content: center; /* center text horizontally */
+                        align-items: center;     /* center text vertically */
+                        font-size: 30px;
+                        background-color: white;
+                }
+                .square:hover {
+                        background-color: khaki;
+                }
+                .notif {
+                        display: flex;
+                        text-align: center;
+                        justify-content: center;
+                        font-size: 20px;
+                }
+                #start-button{
+                        background-color: rgb(202, 202, 202);
+                        padding: 12px;
+                        text-align: center;
+                        border-radius: 10px;
+                }
+                #start-button:hover {
+                        background-color: khaki;
+                }
+        </style>
+        <script>
+                gameEnded = false;
+                /* randomly assign the sign to start with */
+                SIGN = Math.random() < 0.5 ? "X" : "O";
+
+                function makeMove(id) {
+                        if (gameEnded == false) {
+                                /* the square clicked on */
+                                square = document.getElementById(id);
+
+                                /* first check that the square is empty */
+                                if (square.innerHTML == "") {
+                                        square.innerHTML = SIGN; /* empty, add action */
+
+                                        /* popup and show square number */
+                                        sNum = id.substring(2); /* get square number */
+                                        alert("Square " + sNum + " has been altered!");
+                                }
+
+                                /* create an array recording moves */
+                                squares = document.querySelectorAll(".square"); /* get all squares */
+                                moves = [];
+                                unfilled = 0;
+
+                                /* use a foreach to record the current board */
+                                squares.forEach((sq) => {
+                                        moves.push(sq.innerText == "" ? "-" : sq.innerText);
+                                        if (sq.innerText == "") {
+                                                unfilled++; /* record empty squares */
+                                        }
+                                });
+
+                                /* Create win conditions */
+                                winConditions = [
+                                moves[0] + moves[1] + moves[2], /* rows */
+                                moves[3] + moves[4] + moves[5], 
+                                moves[6] + moves[7] + moves[8], 
+                                moves[0] + moves[3] + moves[6], /* columns */
+                                moves[1] + moves[4] + moves[7], 
+                                moves[2] + moves[5] + moves[8], 
+                                moves[0] + moves[4] + moves[8], /* diagonal */
+                                moves[2] + moves[4] + moves[6]];
+
+                                /* Check for a winner */
+                                if (winConditions.includes("XXX")) {
+                                        gameEnded = true;
+                                        displayResult("Player X Wins!");
+                                        return;
+                                } else if (winConditions.includes("OOO")) {
+                                        gameEnded = true;
+                                        displayResult("Player O Wins!");
+                                        return;
+                                } else if (unfilled == 0) {
+                                        gameEnded = true;
+                                        displayResult("Stalemate!");
+                                        return;
+                                }
+
+                                /* alternate to the other player */
+                                if (SIGN == "X") {
+                                        SIGN = "O";
+                                } else {
+                                        SIGN = "X";
+                                }
+
+                                updateTurn();
+                        }
+                }
+
+                function updateTurn() {
+                        console.log("Entered updateTurn()");
+                        /* update whose turn it is */
+                        turn = document.getElementById("turn-notif");
+                        turn.innerHTML = "It's " + SIGN + "'s turn!";
+                }
+
+                function displayResult(result) {
+                        resDisplay = document.getElementById("win-notif");
+                        resDisplay.innerHTML = result;
+                }
+
+                function clearBoard() {
+                        cells = document.getElementsByClassName("square");
+                        /* loop thru all squares, delete what they hold */
+                        for (i = 0; i < cells.length; i++) {
+                                cells[i].innerHTML = "";
+                        }
+
+                        /* reset game ended */
+                        gameEnded = false;
+                }
+        </script>
+</head>
+<body>
+        <h1 style="text-align: center">Beat me in Tic Tac Toe!</h1>
+
+        <div class="notif" id="turn-notif" style="margin-bottom: 10px">
+                It's <span id="current-sign"></span>'s turn!
+        </div>
+        <script>
+                /* Set the initial turn notification dynamically */
+                document.getElementById("current-sign").innerText = SIGN;
+        </script>
+
+        <div class="game-board">
+                <script>
+                        const NUM_SQUARES = 9;
+                        for (i = 0; i < NUM_SQUARES; i++) {
+                                id = "sq" + i;
+                                document.write("<div class='square' id='" + id + "' onclick='makeMove(\"" + id + "\")'>");
+                                document.write("</div>");
+                        }
+                </script>
+        </div>
+
+        <div class="notif" id="win-notif" style="margin-top: 10px">
+                Win condition displayed here!
+        </div>
+
+        <div class="notif" style="margin-top: 10px">
+                <div id="start-button" onclick="clearBoard()">
+                        Restart Game
+                </div>
+        </div>
+</body>
+</html>
